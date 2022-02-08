@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext } from 'react';
 
 // importar cliente axios
-import clienteAxios from '../../config/axios';
+import {clienteAxios} from '../../config/axios';
 import Spinner from '../layout/Spinner';
 import { Link, withRouter } from 'react-router-dom';
 
@@ -24,13 +24,14 @@ const Categorias = (props) => {
             // Query a la API
             const consultarAPI = async () => {
                 try {
-                    const respuesta = await clienteAxios.get('/api/odontologo/', {
+                    const respuesta = await clienteAxios.get('/category/', {
                         headers: {
-                            Authorization : `Bearer ${auth.token}`
+                            Authorization : `Token ${auth.token}`
                         }
                     });
+                    console.log(respuesta.data);
                     // colocar el resultado en el state
-                    guardarCategorias(respuesta.data["odontologos"]);
+                    guardarCategorias(respuesta.data);
                 } catch (error) {
                     // Error con authorizacion
                     if(error.response.status === 500) {
@@ -46,7 +47,7 @@ const Categorias = (props) => {
 
     if(!categorias.length) return <Spinner />
 
-    const columnas = ["Id","Nombre", "Apellidos","Email","Telefono","Estado","Acciones"];
+    const columnas = ["Id","Nombre", "Acciones"];
 
     let editarCategoria = (id) => {
         props.history.push(`/categorias/editar/${id}`);
@@ -55,12 +56,8 @@ const Categorias = (props) => {
     let dataFinal = [];
     categorias.map(item => {
         var data = [];
-        data.push(item["_id"]);
-        data.push(item["nombre"]);
-        data.push(item["apellidos"]);
-        data.push(item["email"]);
-        data.push(item["telefono"]);
-        data.push((item["estado"] ? "Activo" : "Inactivo"));
+        data.push(item["id"]);
+        data.push(item["name"]);
         dataFinal.push(data);
     });
 
