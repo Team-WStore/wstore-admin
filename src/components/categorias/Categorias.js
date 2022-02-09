@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
-
+import Swal from 'sweetalert2';
 // importar cliente axios
 import {clienteAxios} from '../../config/axios';
 import Spinner from '../layout/Spinner';
@@ -13,7 +13,7 @@ const Categorias = (props) => {
     // Trabajar con el state
     // clientes = state,  guardarClientes = funcion para guardar el state
     const [ categorias, guardarCategorias ] = useState([]);
-
+    const [ cambios, setCambios ] = useState(0);
     // utilizar valores del context
     const [auth, guardarAuth ] = useContext( CRMContext );
 
@@ -43,7 +43,7 @@ const Categorias = (props) => {
         } else {
             props.history.push('/iniciar-sesion');
         }
-    }, []);
+    }, [cambios]);
 
     if(!categorias.length) return <Spinner />
 
@@ -51,6 +51,24 @@ const Categorias = (props) => {
 
     let editarCategoria = (id) => {
         props.history.push(`/categorias/editar/${id}`);
+    }
+
+    let eliminarCategoria = async(id) => {
+        await clienteAxios.delete(`/category-modify/${id}`,{
+            headers:{
+                Authorization : `Token ${auth.token}`,
+                'Content-Type': 'application/json',
+            },
+        });
+
+        Swal.fire(
+            'Categoria eliminada correctamente',
+            'Has eliminado una categoria',
+            'success'
+        )
+        // actalulizar
+        // props.history.push('/categorias');
+        setCambios( v => v + 1 );
     }
 
     let dataFinal = [];
@@ -63,6 +81,7 @@ const Categorias = (props) => {
 
     let acciones = [
         ["fa fa-refresh", editarCategoria, "btn btn-warning"],
+        ["fa fa-trash", eliminarCategoria, "btn btn-danger"],
     ]; 
 
     if(!auth.auth){

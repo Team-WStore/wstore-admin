@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { Link, withRouter } from 'react-router-dom';
-import {clienteCloudinary} from '../../config/axios';
+import {clienteCloudinary, clienteAxios} from '../../config/axios';
 import Swal from 'sweetalert2';
 // import el Context
 import { CRMContext } from '../../context/CRMContext';
@@ -14,20 +14,38 @@ const NuevaCategoria = (props) => {
     }
 
     let formData = new FormData();
-    
+    var datos = new FormData();
     const [preview, setPreview] = useState();
-    console.log("preview: ", preview);
 
     const subirImagen = async e => {
         e.preventDefault();
         // autenticar al usuario
         try {
+            // console.log(formData);
             const respuesta = await clienteCloudinary.post('/upload?upload_preset=categorypreset', formData,{
                 headers: {
                   'Content-Type': 'multipart/form-data',
                 },
             });
-            console.log(respuesta.data);
+            const url_image = respuesta.data.secure_url;
+    
+            const respuestota = await clienteAxios.post('/image/', {"image" : url_image},{
+                headers:{
+                    Authorization : `Token ${auth.token}`,
+                    'Content-Type': 'application/json',
+                },
+            });
+        
+            const id_image = respuestota.data.id;
+            datos.append("id", id_image);
+    
+            const rescategoria = await clienteAxios.post('/category-create/', datos, {
+                headers:{
+                    Authorization : `Token ${auth.token}`,
+                    'Content-Type': 'application/json',
+                },
+            });
+
             // alerta
             Swal.fire(
                 'Categoria agregada correctamente',
@@ -35,7 +53,7 @@ const NuevaCategoria = (props) => {
                 'success'
             )
             // redireccionar
-            // props.history.push('/');
+            props.history.push('/categorias');
         } catch (error) {
             console.log(error);
             Swal.fire({
@@ -46,12 +64,9 @@ const NuevaCategoria = (props) => {
         }
     }
 
-    // const leerDatos = (e) => {
-    //     setData({
-    //         ...data,
-    //         [e.target.name] : e.target.value
-    //     });
-    // }
+    const leerDatos = (e) => {
+    datos.append( e.target.name , e.target.value);
+    }
 
     const leerImagen = (e) => {
         if(!!e.target.files[0]){
@@ -60,14 +75,6 @@ const NuevaCategoria = (props) => {
             }
         }
     }
-
-    useEffect(() => {
-        if(!!formData.file){
-            var objectUrl = URL.createObjectURL(formData.file);
-            setPreview(objectUrl);
-        }
-        return () => URL.revokeObjectURL(objectUrl);
-    }, [formData]);
 
     return (
         <main className="app-content">
@@ -81,10 +88,10 @@ const NuevaCategoria = (props) => {
                     <div className="tile">
                         <div className="tile-body">
                             <form onSubmit={subirImagen}>
-                                {/* <div className="form-group">
+                                <div className="form-group">
                                     <label className="control-label">Nombre Categoría (*):</label>
-                                    <input className="form-control" name="nombre" type="text" onChange={leerDatos} placeholder="Ingrese el nombre de la categoría: "/>
-                                </div> */}
+                                    <input className="form-control" name="name" type="text" onChange={leerDatos} placeholder="Ingrese el nombre de la categoría: "/>
+                                </div>
                                 <div className="form-group">
                                     <label className="control-label">Imagen Categoría:</label>
                                     <input className="form-control" name="file" type="file" accept="image/png, image/jpeg" onChange={leerImagen}/>

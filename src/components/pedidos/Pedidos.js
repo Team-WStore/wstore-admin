@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext } from 'react';
 
 // importar cliente axios
-import clienteAxios from '../../config/axios';
+import {clienteAxios} from '../../config/axios';
 import Spinner from '../layout/Spinner';
 import { Link, withRouter } from 'react-router-dom';
 
