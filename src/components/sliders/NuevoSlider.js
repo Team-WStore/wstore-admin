@@ -13,33 +13,23 @@ const NuevaCategoria = (props) => {
         props.history.push('/iniciar-sesion');
     }
 
-    let formData = new FormData();
+    let imagen = new FormData();
     var datos = new FormData();
     const [preview, setPreview] = useState();
 
-    const subirImagen = async e => {
+    const nuevoSlider = async e => {
         e.preventDefault();
-        // autenticar al usuario
         try {
-            // console.log(formData);
-            const respuesta = await clienteCloudinary.post('/upload?upload_preset=categorypreset', formData,{
+            const respuesta = await clienteCloudinary.post('/upload?upload_preset=sliderpreset', imagen,{
                 headers: {
-                  'Content-Type': 'multipart/form-data',
+                    'Content-Type': 'multipart/form-data',
                 },
             });
             const url_image = respuesta.data.secure_url;
-    
-            const respuestota = await clienteAxios.post('/image/', {"image" : url_image},{
-                headers:{
-                    Authorization : `Token ${auth.token}`,
-                    'Content-Type': 'application/json',
-                },
-            });
         
-            const id_image = respuestota.data.id;
-            datos.append("id", id_image);
+            datos.append("image", url_image);
     
-            const rescategoria = await clienteAxios.post('/category-create/', datos, {
+            const resSlider = await clienteAxios.post('/slider-modify/', datos, {
                 headers:{
                     Authorization : `Token ${auth.token}`,
                     'Content-Type': 'multipart/form-data',
@@ -53,7 +43,7 @@ const NuevaCategoria = (props) => {
                 'success'
             )
             // redireccionar
-            props.history.push('/categorias');
+            props.history.push('/sliders');
         } catch (error) {
             console.log(error);
             Swal.fire({
@@ -65,13 +55,13 @@ const NuevaCategoria = (props) => {
     }
 
     const leerDatos = (e) => {
-    datos.append( e.target.name , e.target.value);
+        datos.append( e.target.name , e.target.value);
     }
 
     const leerImagen = (e) => {
         if(!!e.target.files[0]){
             if(e.target.files[0].type === 'image/png' || e.target.files[0].type === 'image/jpeg'){
-                formData.append(e.target.name, e.target.files[0]);
+                imagen.append(e.target.name, e.target.files[0]);
             }
         }
     }
@@ -80,20 +70,28 @@ const NuevaCategoria = (props) => {
         <main className="app-content">
             <div className="app-title">
                 <div>
-                    <h1><i className="fa fa-edit"></i>Nueva Categoría</h1>
+                    <h1><i className="fa fa-edit"></i>Nuevo Slider</h1>
                 </div>
             </div>
             <div className="row">
                 <div className="col-md-12">
                     <div className="tile">
                         <div className="tile-body">
-                            <form onSubmit={subirImagen}>
+                            <form onSubmit={nuevoSlider}>
                                 <div className="form-group">
-                                    <label className="control-label">Nombre Categoría (*):</label>
-                                    <input className="form-control" name="name" type="text" onChange={leerDatos} placeholder="Ingrese el nombre de la categoría: "/>
+                                    <label className="control-label">Nombre (*):</label>
+                                    <input className="form-control" name="name" type="text" onChange={leerDatos} placeholder="Ingrese el nombre del slider: "/>
                                 </div>
                                 <div className="form-group">
-                                    <label className="control-label">Imagen Categoría:</label>
+                                    <label className="control-label">Descripción (*):</label>
+                                    <input className="form-control" name="description" type="text" onChange={leerDatos} placeholder="Ingrese la descripción del slider: "/>
+                                </div>
+                                <div className="form-group">
+                                    <label className="control-label">Url (*):</label>
+                                    <input className="form-control" name="url" type="text" onChange={leerDatos} placeholder="Ingrese el url: "/>
+                                </div>
+                                <div className="form-group">
+                                    <label className="control-label">Imagen Categoría: (*)</label>
                                     <input className="form-control" name="file" type="file" accept="image/png, image/jpeg" onChange={leerImagen}/>
                                 </div>
                                 {!!preview && (

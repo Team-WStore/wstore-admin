@@ -3,6 +3,9 @@ import React, {Fragment, useContext} from 'react';
 // Routing
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
+// Context
+import { CRMContext, CRMProvider } from './context/CRMContext';
+
 /* Layout */
 import Navbar from './components/layout/Navbar';
 import SideBarMenu from './components/layout/SideBarMenu';
@@ -21,11 +24,14 @@ import Categorias from './components/categorias/Categorias';
 import NuevaCategoria from './components/categorias/NuevaCategoria';
 import EditarCategoria from './components/categorias/EditarCategoria';
 
+/* Sliders */
+import Sliders from './components/sliders/Sliders';
+import NuevoSlider from './components/sliders/NuevoSlider';
+import EditarSlider from './components/sliders/EditarSlider';
+
 /* Login */
 import Login from './components/auth/Login';
 
-// Context
-import { CRMContext, CRMProvider } from './context/CRMContext';
 
 const App = () => {
   // utilizar context en el componente
@@ -47,6 +53,10 @@ const App = () => {
                 <Route exact path="/categorias" component={Categorias} />
                 <Route exact path="/categorias/agregar" component={NuevaCategoria} />
                 <Route exact path="/categorias/editar/:id" component={EditarCategoria} />
+
+                <Route exact path="/sliders" component={Sliders} />
+                <Route exact path="/sliders/agregar" component={NuevoSlider} />
+                <Route exact path="/sliders/editar/:id" component={EditarSlider} />
 
                 <Route exact path="/iniciar-sesion" component={Login} />
             </Switch>
