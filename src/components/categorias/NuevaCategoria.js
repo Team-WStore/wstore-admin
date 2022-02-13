@@ -15,7 +15,6 @@ const NuevaCategoria = (props) => {
 
     let formData = new FormData();
     var datos = new FormData();
-    const [preview, setPreview] = useState();
 
     const subirImagen = async e => {
         e.preventDefault();
@@ -24,7 +23,7 @@ const NuevaCategoria = (props) => {
             // console.log(formData);
             const respuesta = await clienteCloudinary.post('/upload?upload_preset=categorypreset', formData,{
                 headers: {
-                  'Content-Type': 'multipart/form-data',
+                    'Content-Type': 'multipart/form-data',
                 },
             });
             const url_image = respuesta.data.secure_url;
@@ -39,7 +38,7 @@ const NuevaCategoria = (props) => {
             const id_image = respuestota.data.id;
             datos.append("id", id_image);
     
-            const rescategoria = await clienteAxios.post('/category-create/', datos, {
+            const resCategoria = await clienteAxios.post('/category-create/', datos, {
                 headers:{
                     Authorization : `Token ${auth.token}`,
                     'Content-Type': 'multipart/form-data',
@@ -95,17 +94,7 @@ const NuevaCategoria = (props) => {
                                 <div className="form-group">
                                     <label className="control-label">Imagen Categoría:</label>
                                     <input className="form-control" name="file" type="file" accept="image/png, image/jpeg" onChange={leerImagen}/>
-                                </div>
-                                {!!preview && (
-                                    <>
-                                        <div className="form-group">
-                                            <label className="control-label">Preview Imagen:</label>
-                                        </div>
-                                        <div>
-                                            <img style={{width: 100+'%', maxWidth: 150, height: 'auto'}} src={preview}/>
-                                        </div>
-                                    </>
-                                )} 
+                                </div> 
                                 <div className="tile-footer">
                                     <button className="btn btn-primary" type="submit"><i className="fa fa-fw fa-lg fa-check-circle"></i>Agregar</button>
                                 </div>

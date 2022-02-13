@@ -21,10 +21,6 @@ const EditarCategoria = (props) => {
 
     let imagen = new FormData();
     const [datos, setDatos] = useState({});
-    console.log("datos: ", datos);
-
-    const [preview, setPreview] = useState();
-    console.log("preview: ", preview);
 
     const leerDatos = (e) => {
         setDatos({
@@ -72,15 +68,21 @@ const EditarCategoria = (props) => {
         e.preventDefault();
         try {
             if(imagen.get('file')){
-                console.log("Si Hay Imagen");
                 const respuesta = await clienteCloudinary.post('/upload?upload_preset=sliderpreset', imagen, {
                     headers: {
                         'Content-Type': 'multipart/form-data',
                     },
                 });
                 const url_image = respuesta.data.secure_url;
+
+                const respuestota = await clienteAxios.post('/image/', {"image" : url_image},{
+                    headers:{
+                        Authorization : `Token ${auth.token}`,
+                        'Content-Type': 'application/json',
+                    },
+                });
+
                 datos.image = url_image;
-                console.log("nuevos datos: ", datos);
             }
     
             const resSlider = await clienteAxios.put(`/slider-modify/${id}`, datos, {
@@ -135,17 +137,7 @@ const EditarCategoria = (props) => {
                                 <div className="form-group">
                                     <label className="control-label">Imagen Categoría:</label>
                                     <input className="form-control" name="file" type="file" accept="image/png, image/jpeg" onChange={leerImagen}/>
-                                </div>
-                                {!!preview && (
-                                    <>
-                                        <div className="form-group">
-                                            <label className="control-label">Preview Imagen:</label>
-                                        </div>
-                                        <div>
-                                            <img style={{width: 100+'%', maxWidth: 150, height: 'auto'}} src={preview}/>
-                                        </div>
-                                    </>
-                                )} 
+                                </div> 
                                 <div className="tile-footer">
                                     <button className="btn btn-primary" type="submit"><i className="fa fa-fw fa-lg fa-check-circle"></i>Agregar</button>
                                 </div>
