@@ -29,6 +29,11 @@ import Sliders from './components/sliders/Sliders';
 import NuevoSlider from './components/sliders/NuevoSlider';
 import EditarSlider from './components/sliders/EditarSlider';
 
+/* Marcas */
+import Marcas from './components/marcas/Marcas';
+import NuevaMarca from './components/marcas/NuevaMarca';
+import EditarMarca from './components/marcas/EditarMarca';
+
 /* Login */
 import Login from './components/auth/Login';
 
@@ -57,6 +62,10 @@ const App = () => {
                 <Route exact path="/sliders" component={Sliders} />
                 <Route exact path="/sliders/agregar" component={NuevoSlider} />
                 <Route exact path="/sliders/editar/:id" component={EditarSlider} />
+
+                <Route exact path="/marcas" component={Marcas} />
+                <Route exact path="/marcas/agregar" component={NuevaMarca} />
+                <Route exact path="/marcas/editar/:id" component={EditarMarca} />
 
                 <Route exact path="/iniciar-sesion" component={Login} />
             </Switch>
