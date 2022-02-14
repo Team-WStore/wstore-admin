@@ -34,6 +34,11 @@ import Marcas from './components/marcas/Marcas';
 import NuevaMarca from './components/marcas/NuevaMarca';
 import EditarMarca from './components/marcas/EditarMarca';
 
+/* Productos */
+import Productos from './components/productos/Productos';
+import NuevoProducto from './components/productos/NuevoProducto';
+import EditarProducto from './components/productos/EditarProducto';
+
 /* Login */
 import Login from './components/auth/Login';
 
@@ -66,6 +71,10 @@ const App = () => {
                 <Route exact path="/marcas" component={Marcas} />
                 <Route exact path="/marcas/agregar" component={NuevaMarca} />
                 <Route exact path="/marcas/editar/:id" component={EditarMarca} />
+
+                <Route exact path="/productos" component={Productos} />
+                <Route exact path="/productos/agregar" component={NuevoProducto} />
+                <Route exact path="/productos/editar/:id" component={EditarProducto} />
 
                 <Route exact path="/iniciar-sesion" component={Login} />
             </Switch>
