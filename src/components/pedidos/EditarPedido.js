@@ -13,13 +13,10 @@ const EditarPedido = (props) => {
     if(!auth.auth){
         props.history.push('/iniciar-sesion');
     }
-
     // obtener el ID
     const { id } = props.match.params;
 
     const [estados, setEstados] = useState({});
-    console.log("estados: ", estados);
-
     // use effect es similar a componentdidmount y willmount
     useEffect( () => {
         if(auth.token !== '') {

@@ -28,8 +28,6 @@ const Productos = (props) => {
                             Authorization : `Token ${auth.token}`
                         }
                     });
-                    console.log(respuesta.data);
-                    // colocar el resultado en el state
                     guardarProductos(respuesta.data);
                 } catch (error) {
                     // Error con authorizacion

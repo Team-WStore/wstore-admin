@@ -13,7 +13,6 @@ const EditarCategoria = (props) => {
     if(!auth.auth){
         props.history.push('/iniciar-sesion');
     }
-
     // obtener el ID
     const { id } = props.match.params;
 
@@ -35,8 +34,6 @@ const EditarCategoria = (props) => {
                             Authorization : `Token ${auth.token}`
                         }
                     });
-                    console.log(respuesta.data);
-                    // colocar el resultado en el state
                     setCategorias(respuesta.data);
                 } catch (error) {
                     // Error con authorizacion
@@ -62,8 +59,6 @@ const EditarCategoria = (props) => {
                             Authorization : `Token ${auth.token}`
                         }
                     });
-                    console.log(respuesta.data);
-                    // colocar el resultado en el state
                     setMarcas(respuesta.data);
                 } catch (error) {
                     // Error con authorizacion
@@ -88,7 +83,6 @@ const EditarCategoria = (props) => {
                             Authorization : `Token ${auth.token}`
                         }
                     });
-                    console.log(respuesta.data);
                     respuesta.data.brand = respuesta.data.brand.id
                     respuesta.data.category = respuesta.data.category.id
                     setDatos(respuesta.data);
@@ -157,8 +151,6 @@ const EditarCategoria = (props) => {
             datos.discount = parseInt(datos.discount);
             // datos.brand = datos.brand.id || datos.brand;
             // datos.category = datos.category.id || datos.category;
-
-            console.log("Datos a enviados: ", datos);
 
             const resProducto = await clienteAxios.put('/product-update/', datos, {
                 headers:{

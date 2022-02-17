@@ -31,8 +31,6 @@ const NuevoProducto = (props) => {
                             Authorization : `Token ${auth.token}`
                         }
                     });
-                    console.log(respuesta.data);
-                    // colocar el resultado en el state
                     setCategorias(respuesta.data);
                 } catch (error) {
                     // Error con authorizacion
@@ -58,8 +56,6 @@ const NuevoProducto = (props) => {
                             Authorization : `Token ${auth.token}`
                         }
                     });
-                    console.log(respuesta.data);
-                    // colocar el resultado en el state
                     setMarcas(respuesta.data);
                 } catch (error) {
                     // Error con authorizacion

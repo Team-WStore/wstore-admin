@@ -47,7 +47,6 @@ const EditarCategoria = (props) => {
                             Authorization : `Token ${auth.token}`
                         }
                     });
-                    console.log(respuesta.data);
                     // colocar el resultado en el state
                     setData(respuesta.data);
                 } catch (error) {

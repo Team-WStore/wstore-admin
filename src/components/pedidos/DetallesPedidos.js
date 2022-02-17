@@ -10,7 +10,6 @@ const DetallesPedidos = (props) => {
 
     // obtener el ID
     const { id } = props.match.params;
-    console.log(id);
 
     // utilizar valores del context
     const [auth, guardarAuth ] = useContext(CRMContext);
@@ -20,8 +19,6 @@ const DetallesPedidos = (props) => {
     }
 
     const [datos, setDatos] = useState({});
-    console.log("datos: ", datos);
-
     // use effect es similar a componentdidmount y willmount
     useEffect( () => {
         if(auth.token !== '') {

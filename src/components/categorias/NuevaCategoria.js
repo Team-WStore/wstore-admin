@@ -20,7 +20,6 @@ const NuevaCategoria = (props) => {
         e.preventDefault();
         // autenticar al usuario
         try {
-            // console.log(formData);
             const respuesta = await clienteCloudinary.post('/upload?upload_preset=categorypreset', formData,{
                 headers: {
                     'Content-Type': 'multipart/form-data',
