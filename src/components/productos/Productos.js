@@ -51,7 +51,7 @@ const Productos = (props) => {
     }
 
     let eliminarCategoria = async(id) => {
-        await clienteAxios.delete(`/category-modify/${id}`,{
+        await clienteAxios.delete(`/product/${id}`, {
             headers:{
                 Authorization : `Token ${auth.token}`,
                 'Content-Type': 'application/json',

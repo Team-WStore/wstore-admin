@@ -17,24 +17,12 @@ const EditarCategoria = (props) => {
     // obtener el ID
     const { id } = props.match.params;
 
-    let imagen = new FormData();
-    const [data, setData] = useState({});
-    var datos = new FormData();
+    const [imagenes, setImagenes] = useState([]);
 
-    const leerDatos = (e) => {
-        setData({
-            ...data,
-            [e.target.name] : e.target.value
-        });
-    }
+    const [datos, setDatos] = useState({});
 
-    const leerImagen = (e) => {
-        if(!!e.target.files[0]){
-            if(e.target.files[0].type === 'image/png' || e.target.files[0].type === 'image/jpeg'){
-                imagen.append(e.target.name, e.target.files[0]);
-            }
-        }
-    }
+    const [categorias, setCategorias] = useState([]);
+    const [marcas, setMarcas] = useState([]);
 
     // use effect es similar a componentdidmount y willmount
     useEffect( () => {
@@ -42,14 +30,14 @@ const EditarCategoria = (props) => {
             // Query a la API
             const consultarAPI = async () => {
                 try {
-                    const respuesta = await clienteAxios.get(`/category-modify/${id}`, {
+                    const respuesta = await clienteAxios.get('/category/', {
                         headers: {
                             Authorization : `Token ${auth.token}`
                         }
                     });
                     console.log(respuesta.data);
                     // colocar el resultado en el state
-                    setData(respuesta.data);
+                    setCategorias(respuesta.data);
                 } catch (error) {
                     // Error con authorizacion
                     if(error.response.status === 500) {
@@ -63,48 +51,130 @@ const EditarCategoria = (props) => {
         }
     }, []);
 
-    const editarCategoria = async e => {
+    // use effect es similar a componentdidmount y willmount
+    useEffect( () => {
+        if(auth.token !== '') {
+            // Query a la API
+            const consultarAPI = async () => {
+                try {
+                    const respuesta = await clienteAxios.get('/brand/', {
+                        headers: {
+                            Authorization : `Token ${auth.token}`
+                        }
+                    });
+                    console.log(respuesta.data);
+                    // colocar el resultado en el state
+                    setMarcas(respuesta.data);
+                } catch (error) {
+                    // Error con authorizacion
+                    if(error.response.status === 500) {
+                        props.history.push('/iniciar-sesion');
+                    }
+                }
+            }
+            consultarAPI();
+        } else {
+            props.history.push('/iniciar-sesion');
+        }
+    }, []);
+
+    useEffect( () => {
+        if(auth.token !== '') {
+            // Query a la API
+            const consultarAPI = async () => {
+                try {
+                    const respuesta = await clienteAxios.get(`/product/${id}`, {
+                        headers: {
+                            Authorization : `Token ${auth.token}`
+                        }
+                    });
+                    console.log(respuesta.data);
+                    respuesta.data.brand = respuesta.data.brand.id
+                    respuesta.data.category = respuesta.data.category.id
+                    setDatos(respuesta.data);
+                } catch (error) {
+                    // Error con authorizacion
+                    if(error.response.status === 500) {
+                        props.history.push('/iniciar-sesion');
+                    }
+                }
+            }
+            consultarAPI();
+        } else {
+            props.history.push('/iniciar-sesion');
+        }
+    }, []);
+
+    const leerDatos = (e) => {
+        setDatos({
+            ...datos,
+            [e.target.name] : e.target.value
+        });
+    }
+
+    const leerImagen = (e) => {
+        if(!!e.target.files[0]){
+            if(e.target.files[0].type === 'image/png' || e.target.files[0].type === 'image/jpeg'){
+                setImagenes({
+                    ...imagenes,
+                    [e.target.name] : e.target.files
+                });
+            }
+        }
+    }
+
+    const editarProducto = async e => {
         e.preventDefault();
         try {
-            if(imagen.get('file')){
-                const respuesta = await clienteCloudinary.post('/upload?upload_preset=categorypreset', imagen, {
-                    headers: {
-                        'Content-Type': 'multipart/form-data',
-                    },
-                });
-                const url_image = respuesta.data.secure_url;
+            if(imagenes.files){
+                const files = Array.from(imagenes.files);
+                var images = [];
 
-                const respuestota = await clienteAxios.post('/image/', {"image" : url_image},{
-                    headers:{
-                        Authorization : `Token ${auth.token}`,
-                        'Content-Type': 'application/json',
-                    },
-                });
-            
-                const id_image = respuestota.data.id;
-                datos.append("image_id", id_image);
-            } else {
-                datos.append("image_id", data.image.id);
+                for (const image of files) {
+                    let imagenForm = new FormData();
+                    imagenForm.append("file", image);
+                    const respuesta = await clienteCloudinary.post('/upload?upload_preset=productpreset', imagenForm, {
+                        headers: {
+                            'Content-Type': 'multipart/form-data',
+                        },
+                    });
+                    const url_image = respuesta.data.secure_url;
+
+                    const respuestota = await clienteAxios.post('/image/', {"image" : url_image},{
+                        headers:{
+                            Authorization : `Token ${auth.token}`,
+                            'Content-Type': 'application/json',
+                        },
+                    });
+                
+                    const id_image = respuestota.data.id;
+                    images.push(id_image)
+                }
+
+                datos.images = images;
             }
-            
-            datos.append("category_id", id);
-            datos.append("name", data.name);
-    
-            const resCategoria = await clienteAxios.put('/category-update/', datos, {
+
+            datos.discount = parseInt(datos.discount);
+            // datos.brand = datos.brand.id || datos.brand;
+            // datos.category = datos.category.id || datos.category;
+
+            console.log("Datos a enviados: ", datos);
+
+            const resProducto = await clienteAxios.put('/product-update/', datos, {
                 headers:{
                     Authorization : `Token ${auth.token}`,
-                    'Content-Type': 'multipart/form-data',
+                    'Content-Type': 'application/json',
                 },
             });
 
             // alerta
             Swal.fire(
-                'Categoría editada correctamente',
-                'Has editado una categoría',
+                'Producto editado correctamente',
+                'Has editado un producto',
                 'success'
             )
             // redireccionar
-            props.history.push('/categorias');
+            props.history.push('/productos');
         } catch (error) {
             console.log(error);
             Swal.fire({
@@ -119,22 +189,50 @@ const EditarCategoria = (props) => {
         <main className="app-content">
             <div className="app-title">
                 <div>
-                    <h1><i className="fa fa-edit"></i>Editar Categoría</h1>
+                    <h1><i className="fa fa-edit"></i>Editar Producto</h1>
                 </div>
             </div>
             <div className="row">
                 <div className="col-md-12">
                     <div className="tile">
                         <div className="tile-body">
-                            <form onSubmit={editarCategoria}>
+                            <form onSubmit={editarProducto}>
                                 <div className="form-group">
-                                    <label className="control-label">Nombre Categoría:</label>
-                                    <input className="form-control" name="name" value={data.name} type="text" onChange={leerDatos} placeholder="Ingrese el nombre de la categoría: "/>
+                                    <label className="control-label">Nombre Producto (*):</label>
+                                    <input className="form-control" value={datos.name || ""} name="name" type="text" onChange={leerDatos} placeholder="Ingrese el nombre del producto: "/>
                                 </div>
                                 <div className="form-group">
-                                    <label className="control-label">Imagen Categoría:</label>
-                                    <input className="form-control" name="file" type="file" accept="image/png, image/jpeg" onChange={leerImagen}/>
+                                    <label className="control-label">Descripción Producto (*):</label>
+                                    <input className="form-control" value={datos.description || ""} name="description" type="text" onChange={leerDatos} placeholder="Ingrese la descripción del producto: "/>
                                 </div>
+                                <div className="form-group">
+                                    <label className="control-label">Categoría Producto (*):</label>
+                                    <select className="form-control" name="category" onChange={leerDatos}>
+                                        {categorias.map(categoria => <option key={categoria.id} value={categoria.id}>{categoria.name}</option>)}
+                                    </select>
+                                </div>
+                                <div className="form-group">
+                                    <label className="control-label">Marca Producto (*):</label>
+                                    <select className="form-control" name="brand" onChange={leerDatos}>
+                                        {marcas.map(marca => <option key={marca.id} value={marca.id}>{marca.name}</option>)}
+                                    </select>
+                                </div>
+                                <div className="form-group">
+                                    <label className="control-label">Precio Producto (*):</label>
+                                    <input className="form-control" value={datos.price || 0} name="price" type="number" min={0} step={0.01} onChange={leerDatos} placeholder="Ingrese el precio del producto: "/>
+                                </div>
+                                <div className="form-group">
+                                    <label className="control-label">Porcentaje Descuento (*):</label>
+                                    <input className="form-control" value={datos.discount || 0} name="discount" type="number" min={0} onChange={leerDatos} placeholder="Ingrese el porcentaje del producto: "/>
+                                </div>
+                                <div className="form-group">
+                                    <label className="control-label">Stock Producto (*):</label>
+                                    <input className="form-control" value={datos.available || 0} name="available" type="number" min={0} onChange={leerDatos} placeholder="Ingrese el stock del producto: "/>
+                                </div>
+                                <div className="form-group">
+                                    <label className="control-label">Imagenes Producto:</label>
+                                    <input className="form-control" name="files" type="file" multiple accept="image/png, image/jpeg" onChange={leerImagen}/>
+                                </div> 
                                 <div className="tile-footer">
                                     <button className="btn btn-primary" type="submit"><i className="fa fa-fw fa-lg fa-check-circle"></i>Editar</button>
                                 </div>

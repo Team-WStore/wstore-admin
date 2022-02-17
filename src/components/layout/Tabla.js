@@ -13,7 +13,7 @@ const Tabla = (props) => {
     useEffect(() => {
       setTimeout(()=>{
         $("#sampleTable").DataTable();
-      },1000)
+      }, 0)
     }, [])
 
     return (

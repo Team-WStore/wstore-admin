@@ -17,7 +17,7 @@ import Dashboard from './components/dashboard/Dashboard';
 /* Dashboard */
 import Pedidos from './components/pedidos/Pedidos';
 import DetallesPedidos from './components/pedidos/DetallesPedidos';
-import NuevoPedido from './components/pedidos/NuevoPedido';
+import EditarPedido from './components/pedidos/EditarPedido';
 
 /* Categorias */
 import Categorias from './components/categorias/Categorias';
@@ -57,7 +57,7 @@ const App = () => {
                 <Route exact path="/" component={Dashboard} />
 
                 <Route exact path="/pedidos" component={Pedidos} />
-                <Route exact path="/pedidos/agregar" component={NuevoPedido} />
+                <Route exact path="/pedidos/editar/:id" component={EditarPedido} />
                 <Route exact path="/pedidos/:id" component={DetallesPedidos} />
 
                 <Route exact path="/categorias" component={Categorias} />

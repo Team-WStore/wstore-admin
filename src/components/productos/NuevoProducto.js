@@ -14,9 +14,9 @@ const NuevoProducto = (props) => {
     }
 
     const [imagenes, setImagenes] = useState([]);
-    console.log("Imagenes: ", imagenes);
+
     const [datos, setDatos] = useState({});
-    console.log(datos);
+
     const [categorias, setCategorias] = useState([]);
     const [marcas, setMarcas] = useState([]);
 

@@ -24,15 +24,12 @@ const Pedidos = (props) => {
             // Query a la API
             const consultarAPI = async () => {
                 try {
-                    const respuesta = await clienteAxios.get('/api/odontologo/', {
+                    const respuesta = await clienteAxios.get('/order/', {
                         headers: {
-                            Authorization : `Bearer ${auth.token}`
+                            Authorization : `Token ${auth.token}`
                         }
                     });
-
-                    // colocar el resultado en el state
-                    guardarPedidos(respuesta.data["odontologos"]);
-
+                    guardarPedidos(respuesta.data);
                 } catch (error) {
                     // Error con authorizacion
                     if(error.response.status === 500) {
@@ -48,27 +45,31 @@ const Pedidos = (props) => {
 
     if(!pedidos.length) return <Spinner />
 
-    const columnas = ["Id","Nombre", "Apellidos","Email","Telefono","Estado","Acciones"];
+    const columnas = ["Id", "Id Pago", "Total","Revisado","Enviado","Entregado","Acciones"];
 
     let verDetalles = (id) => {
         props.history.push(`/pedidos/${id}`);
     }
 
+    let editarEstadoPedido = (id) => {
+        props.history.push(`/pedidos/editar/${id}`);
+    }
+
     let dataFinal = [];
     pedidos.map(item => {
         var data = [];
-        data.push(item["_id"]);
-        data.push(item["nombre"]);
-        data.push(item["apellidos"]);
-        data.push(item["email"]);
-        data.push(item["telefono"]);
-        data.push((item["estado"] ? "Activo" : "Inactivo"));
+        data.push(item["id"]);
+        data.push(item["payment"]["charge_id"]);
+        data.push(item["total"]);
+        data.push((item["reviewed"] ? "Revisado" : "No revisado"));
+        data.push((item["sent"]  ? "Enviado" : "No Enviado"));
+        data.push((item["delivered"] ? "Entregado" : "No Entregado"));
         dataFinal.push(data);
     });
 
     let acciones = [
         ["fa fa-info", verDetalles, "btn btn-info"],
-        ["fa fa-refresh", verDetalles, "btn btn-warning"],
+        ["fa fa-refresh", editarEstadoPedido, "btn btn-warning"],
     ]; 
 
     if(!auth.auth){
@@ -82,7 +83,6 @@ const Pedidos = (props) => {
                     <h1>Pedidos</h1>
                 </div>
             </div>
-            <Link to={"/pedidos/agregar"} className="btn btn-success">Nuevo Pedido</Link>
             <br></br>
             <br></br>
             <div className="row">

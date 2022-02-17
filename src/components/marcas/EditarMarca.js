@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { Link, withRouter } from 'react-router-dom';
-import {clienteCloudinary, clienteAxios} from '../../config/axios';
+import { clienteAxios} from '../../config/axios';
 import Swal from 'sweetalert2';
 
 // import el Context
