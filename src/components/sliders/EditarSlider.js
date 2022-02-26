@@ -13,12 +13,8 @@ const EditarCategoria = (props) => {
     if(!auth.auth){
         props.history.push('/iniciar-sesion');
     }
-
     // obtener el ID
     const { id } = props.match.params;
-    console.log(id);
-
-
     let imagen = new FormData();
     const [datos, setDatos] = useState({});
 
@@ -48,8 +44,6 @@ const EditarCategoria = (props) => {
                             Authorization : `Token ${auth.token}`
                         }
                     });
-                    console.log(respuesta.data);
-                    // colocar el resultado en el state
                     setDatos(respuesta.data);
                 } catch (error) {
                     // Error con authorizacion

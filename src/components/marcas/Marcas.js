@@ -29,7 +29,6 @@ const Marcas = (props) => {
                             Authorization : `Token ${auth.token}`
                         }
                     });
-                    console.log(respuesta.data);
                     // colocar el resultado en el state
                     guardarMarcas(respuesta.data);
                 } catch (error) {

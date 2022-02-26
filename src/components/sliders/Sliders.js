@@ -29,8 +29,6 @@ const Sliders = (props) => {
                             Authorization : `Token ${auth.token}`
                         }
                     });
-                    console.log(respuesta.data);
-                    // colocar el resultado en el state
                     guardarCategorias(respuesta.data);
                 } catch (error) {
                     // Error con authorizacion
