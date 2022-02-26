@@ -89,11 +89,11 @@ const NuevaCategoria = (props) => {
                             <form onSubmit={subirImagen}>
                                 <div className="form-group">
                                     <label className="control-label">Nombre Categoría (*):</label>
-                                    <input className="form-control" name="name" type="text" onChange={leerDatos} placeholder="Ingrese el nombre de la categoría: "/>
+                                    <input className="form-control" name="name" type="text" required onChange={leerDatos} placeholder="Ingrese el nombre de la categoría: "/>
                                 </div>
                                 <div className="form-group">
                                     <label className="control-label">Imagen Categoría:</label>
-                                    <input className="form-control" name="file" type="file" accept="image/png, image/jpeg" onChange={leerImagen}/>
+                                    <input className="form-control" name="file" type="file" required accept="image/png, image/jpeg" onChange={leerImagen}/>
                                 </div> 
                                 <div className="tile-footer">
                                     <button className="btn btn-primary" type="submit"><i className="fa fa-fw fa-lg fa-check-circle"></i>Agregar</button>

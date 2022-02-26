@@ -76,7 +76,7 @@ const DetallesPedidos = (props) => {
                         <div className="col-4"><strong>Datos Envio Comprador:</strong>
                         <address><strong>Dirección:</strong> {datos['shipping_address']['address'] || ""}<br/><strong>Ciudad:</strong> {datos['shipping_address']['city'] || ""}<br/><strong>Código Postal:</strong> {datos['shipping_address']['zip'] || ""}</address>
                         </div>
-                        <div className="col-4"><br/><br/><b>Order ID: </b>{datos.id || ""}<br/><b>Fecha Pago:</b> {datos['payment']['timestamp']}<br/><b>ID pago:</b> {datos['payment']['charge_id']}</div>
+                        <div className="col-4"><br/><br/><b>Order ID: </b>{datos.ref_code || ""}<br/><b>Fecha Pago:</b> {datos['payment']['timestamp']}<br/><b>ID pago:</b> {datos['payment']['charge_id']}</div>
                     </div>
                     <div className="row">
                         <div className="col-12 table-responsive">
@@ -108,7 +108,7 @@ const DetallesPedidos = (props) => {
                                     <td></td>
                                     <td></td>
                                     <td><strong>Total:</strong></td>
-                                    <td><strong>{`$ ${datos.total}`}</strong></td>
+                                    <td><strong>{`$ ${(datos.payment.amount).toFixed(2)}`}</strong></td>
                                 </tr>
                             </tbody>
                         </table>

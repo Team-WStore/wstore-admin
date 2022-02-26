@@ -13,6 +13,7 @@ const Pedidos = (props) => {
     // Trabajar con el state
     // clientes = state,  guardarClientes = funcion para guardar el state
     const [ pedidos, guardarPedidos ] = useState([]);
+    console.log(pedidos);
 
     // utilizar valores del context
     const [auth, guardarAuth ] = useContext( CRMContext );
@@ -60,7 +61,7 @@ const Pedidos = (props) => {
         var data = [];
         data.push(item["id"]);
         data.push(item["payment"]["charge_id"]);
-        data.push(item["total"]);
+        data.push((item["payment"]["amount"]).toFixed(2));
         data.push((item["reviewed"] ? "Revisado" : "No revisado"));
         data.push((item["sent"]  ? "Enviado" : "No Enviado"));
         data.push((item["delivered"] ? "Entregado" : "No Entregado"));

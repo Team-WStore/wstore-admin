@@ -170,39 +170,39 @@ const NuevoProducto = (props) => {
                             <form onSubmit={subirProducto}>
                                 <div className="form-group">
                                     <label className="control-label">Nombre Producto (*):</label>
-                                    <input className="form-control" name="name" type="text" onChange={leerDatos} placeholder="Ingrese el nombre del producto: "/>
+                                    <input className="form-control" name="name" type="text" required onChange={leerDatos} placeholder="Ingrese el nombre del producto: "/>
                                 </div>
                                 <div className="form-group">
                                     <label className="control-label">Descripción Producto (*):</label>
-                                    <input className="form-control" name="description" type="text" onChange={leerDatos} placeholder="Ingrese la descripción del producto: "/>
+                                    <input className="form-control" name="description" type="text" required onChange={leerDatos} placeholder="Ingrese la descripción del producto: "/>
                                 </div>
                                 <div className="form-group">
                                     <label className="control-label">Categoría Producto (*):</label>
-                                    <select className="form-control" name="category" onChange={leerDatos}>
+                                    <select className="form-control" required name="category" onChange={leerDatos}>
                                         {categorias.map(categoria => <option key={categoria.id} value={categoria.id}>{categoria.name}</option>)}
                                     </select>
                                 </div>
                                 <div className="form-group">
                                     <label className="control-label">Marca Producto (*):</label>
-                                    <select className="form-control" name="brand" onChange={leerDatos}>
+                                    <select className="form-control" required name="brand" onChange={leerDatos}>
                                         {marcas.map(marca => <option key={marca.id} value={marca.id}>{marca.name}</option>)}
                                     </select>
                                 </div>
                                 <div className="form-group">
                                     <label className="control-label">Precio Producto (*):</label>
-                                    <input className="form-control" name="price" type="number" min={0} step={0.01} onChange={leerDatos} placeholder="Ingrese el precio del producto: "/>
+                                    <input className="form-control" required name="price" type="number" min={0} step={0.01} onChange={leerDatos} placeholder="Ingrese el precio del producto: "/>
                                 </div>
                                 <div className="form-group">
                                     <label className="control-label">Porcentaje Descuento (*):</label>
-                                    <input className="form-control" name="discount" type="number" min={0} onChange={leerDatos} placeholder="Ingrese el porcentaje del producto: "/>
+                                    <input className="form-control" required name="discount" type="number" min={0} onChange={leerDatos} placeholder="Ingrese el porcentaje del producto: "/>
                                 </div>
                                 <div className="form-group">
                                     <label className="control-label">Stock Producto (*):</label>
-                                    <input className="form-control" name="available" type="number" min={0} onChange={leerDatos} placeholder="Ingrese el stock del producto: "/>
+                                    <input className="form-control" required name="available" type="number" min={0} onChange={leerDatos} placeholder="Ingrese el stock del producto: "/>
                                 </div>
                                 <div className="form-group">
                                     <label className="control-label">Imagenes Producto:</label>
-                                    <input className="form-control" name="files" type="file" multiple accept="image/png, image/jpeg" onChange={leerImagen}/>
+                                    <input className="form-control" required name="files" type="file" multiple accept="image/png, image/jpeg" onChange={leerImagen}/>
                                 </div> 
                                 <div className="tile-footer">
                                     <button className="btn btn-primary" type="submit"><i className="fa fa-fw fa-lg fa-check-circle"></i>Agregar</button>

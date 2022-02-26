@@ -80,19 +80,19 @@ const NuevaCategoria = (props) => {
                             <form onSubmit={nuevoSlider}>
                                 <div className="form-group">
                                     <label className="control-label">Nombre (*):</label>
-                                    <input className="form-control" name="name" type="text" onChange={leerDatos} placeholder="Ingrese el nombre del slider: "/>
+                                    <input className="form-control" required name="name" type="text" onChange={leerDatos} placeholder="Ingrese el nombre del slider: "/>
                                 </div>
                                 <div className="form-group">
                                     <label className="control-label">Descripción (*):</label>
-                                    <input className="form-control" name="description" type="text" onChange={leerDatos} placeholder="Ingrese la descripción del slider: "/>
+                                    <input className="form-control" required name="description" type="text" onChange={leerDatos} placeholder="Ingrese la descripción del slider: "/>
                                 </div>
                                 <div className="form-group">
                                     <label className="control-label">Url (*):</label>
-                                    <input className="form-control" name="url" type="text" onChange={leerDatos} placeholder="Ingrese el url: "/>
+                                    <input className="form-control" required name="url" type="text" onChange={leerDatos} placeholder="Ingrese el url: "/>
                                 </div>
                                 <div className="form-group">
                                     <label className="control-label">Imagen Categoría: (*)</label>
-                                    <input className="form-control" name="file" type="file" accept="image/png, image/jpeg" onChange={leerImagen}/>
+                                    <input className="form-control" required name="file" type="file" accept="image/png, image/jpeg" onChange={leerImagen}/>
                                 </div>
                                 {!!preview && (
                                     <>

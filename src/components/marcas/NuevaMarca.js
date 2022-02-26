@@ -65,7 +65,7 @@ const NuevaMarca = (props) => {
                             <form onSubmit={nuevaMarca}>
                                 <div className="form-group">
                                     <label className="control-label">Nombre Marca (*):</label>
-                                    <input className="form-control" name="name" type="text" onChange={leerDatos} placeholder="Ingrese el nombre de la marca: "/>
+                                    <input className="form-control" name="name" type="text" required onChange={leerDatos} placeholder="Ingrese el nombre de la marca: "/>
                                 </div>
                                 <div className="tile-footer">
                                     <button className="btn btn-primary" type="submit"><i className="fa fa-fw fa-lg fa-check-circle"></i>Agregar</button>
